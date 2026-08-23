@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.config import settings
-from app.api.routes import ocean, species, biodiversity, fisheries, molecular, analytics, query
+from app.api.routes import ocean, species, biodiversity, fisheries, molecular, analytics, query, datasets
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -26,6 +26,7 @@ app.include_router(fisheries.router, prefix=settings.API_V1_STR)
 app.include_router(molecular.router, prefix=settings.API_V1_STR)
 app.include_router(analytics.router, prefix=settings.API_V1_STR)
 app.include_router(query.router, prefix=settings.API_V1_STR)
+app.include_router(datasets.router, prefix=settings.API_V1_STR)
 
 @app.get("/health", tags=["System"])
 def health_check():
