@@ -36,7 +36,7 @@ class MGnifyConnector(DatasetConnector):
                         "latitude": latitude,
                         "longitude": longitude,
                         "timestamp": attr.get("collection-date") or "2023-05-15T00:00:00Z",
-                        "sample_accession": item.get("id", "ERS000000"),
+                        # "sample_accession": item.get("id", "ERS000000"),
                         "sequence_type": "16S rRNA",
                         "taxonomic_profile": {"Cyanobacteria": 0.45, "Pelagibacterales": 0.35},
                         "source_record_id": f"MGNF_{item.get('id')}"
@@ -61,7 +61,7 @@ class MGnifyConnector(DatasetConnector):
             mol = MolecularSampleModel(
                 dataset_id=self.dataset_id,
                 location_id=loc.id,
-                sample_accession=rec["sample_accession"],
+                # sample_accession=rec["sample_accession"],
                 sequence_type=rec["sequence_type"],
                 taxonomic_profile=rec["taxonomic_profile"],
                 source_record_id=rec["source_record_id"]

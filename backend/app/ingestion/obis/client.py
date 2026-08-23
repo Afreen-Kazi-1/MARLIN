@@ -6,6 +6,33 @@ from app.ingestion.quality import DataQualityReport
 from app.database.base import BiodiversityObservationModel, LocationModel, SpeciesModel
 from app.analytics.spatial import SpatialService
 
+def _parse_timestamp(ts_str: str) -> datetime.datetime:
+    if not ts_str:
+        return datetime.datetime.now(datetime.timezone.utc)
+    ts_str = ts_str.strip()
+    if ts_str.endswith("Z"):
+        ts_str = ts_str[:-1] + "+00:00"
+    
+    try:
+        return datetime.datetime.fromisoformat(ts_str)
+    except ValueError:
+        pass
+        
+    if len(ts_str) == 4 and ts_str.isdigit():
+        return datetime.datetime.fromisoformat(f"{ts_str}-01-01T00:00:00+00:00")
+        
+    if len(ts_str) == 10 and ts_str[4] == "-" and ts_str[7] == "-":
+        return datetime.datetime.fromisoformat(f"{ts_str}T00:00:00+00:00")
+        
+    if "+" not in ts_str:
+        if "T" not in ts_str:
+            ts_str += "T00:00:00"
+        ts_str += "+00:00"
+    try:
+        return datetime.datetime.fromisoformat(ts_str)
+    except ValueError:
+        return datetime.datetime.now(datetime.timezone.utc)
+
 class OBISConnector(DatasetConnector):
     """
     OBIS (Ocean Biodiversity Information System) API connector.
@@ -105,11 +132,11 @@ class OBISConnector(DatasetConnector):
                 dataset_id=self.dataset_id,
                 species_id=species.id,
                 location_id=loc.id,
-                timestamp=datetime.datetime.fromisoformat(rec["timestamp"].replace("Z", "+00:00")),
+                timestamp=_parse_timestamp(rec["timestamp"]),
                 depth_m=rec["depth_m"],
                 observation_type="abundance_count",
                 abundance=float(rec["count"]),
-                count=rec["count"],
+                count=int(float(rec["count"])) if rec["count"] is not None else 1,
                 source_record_id=rec["source_record_id"]
             )
             self.db.add(obs)

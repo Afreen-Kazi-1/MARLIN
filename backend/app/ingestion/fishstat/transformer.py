@@ -21,7 +21,7 @@ class FishStatConnector(DatasetConnector):
                     for feat in features:
                         props = feat.get("properties", {})
                         yield {
-                            "species_name": props.get("SPECIES_NAME", "Thunnus albacares"),
+                            "species_name": props.get("SPECIES_NAME", "Katsuwonus pelamis"),
                             "region_id": "Arabian_Sea",
                             "year": int(props.get("YEAR", 2022)),
                             "catch": float(props.get("CATCH_TONS", 12500.0)),
@@ -32,7 +32,7 @@ class FishStatConnector(DatasetConnector):
             except Exception:
                 # Fallback to normalized static capture data if FAO GeoServer is under maintenance
                 yield {
-                    "species_name": "Thunnus albacares",
+                    "species_name": "Katsuwonus pelamis",
                     "region_id": "Arabian_Sea",
                     "year": 2023,
                     "catch": 14200.5,

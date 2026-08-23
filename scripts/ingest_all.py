@@ -86,8 +86,11 @@ def run_full_pipeline():
         # 2. OBIS Biodiversity Pipeline
         print("\n--- 2. Processing OBIS Biodiversity ---")
         obis = OBISConnector(dataset_id="DS_OBIS_002", db_session=db)
-        raw_obis = list(obis.transform(""))
-        print(f"  -> Extracted {len(raw_obis)} live records from OBIS v3 API")
+        raw_obis = []
+        for sp_name in ["Thunnus albacares", "Katsuwonus pelamis", "Sardinella longiceps"]:
+            print(f"  -> Fetching occurrences for '{sp_name}'...")
+            raw_obis.extend(list(obis.transform(sp_name)))
+        print(f"  -> Extracted {len(raw_obis)} total live records from OBIS v3 API")
         obis_res = obis.load(raw_obis)
         print(f"  -> Persisted to DB: {obis_res.get('records_processed', 0)} records")
         
