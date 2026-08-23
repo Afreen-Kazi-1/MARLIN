@@ -8,7 +8,7 @@ class Settings(BaseSettings):
     API_V1_STR: str = "/api"
     
     # Database Settings
-    DATABASE_URL: str = "postgresql://postgres:postgres@localhost:5432/marine_db"
+    DATABASE_URL: str = "postgresql://postgres:postgrespassword@localhost:5432/marine_db"
     
     # AI / LLM Settings
     LLM_API_KEY: Optional[str] = None

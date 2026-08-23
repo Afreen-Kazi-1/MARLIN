@@ -130,7 +130,7 @@ def seed_database():
             WHERE l.region_id = 'Arabian_Sea' 
               AND s.canonical_name = 'Thunnus albacares'
               AND om.variable = 'temperature'
-            GROUP BY l.region_id, l.grid_cell_id, s.canonical_name;
+            GROUP BY l.region_id, l.grid_cell_id, s.canonical_name, om.variable;
         """)
 
         results = db.execute(verification_sql).fetchall()
