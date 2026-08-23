@@ -2,44 +2,34 @@ from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 from typing import List, Optional
 from app.database.session import get_db
-from app.database.models.measurements import OceanMeasurementModel
+from app.services.domain_services import OceanService
+from app.schemas.domain import OceanMeasurementResponse
 from app.analytics.engine import ScientificAnalyticsEngine
 
 router = APIRouter(prefix="/ocean", tags=["Oceanography"])
 
-@app_router_get_measurements := router.get("/measurements")
+def get_ocean_service() -> OceanService:
+    return OceanService()
+
+@router.get("/measurements", response_model=List[OceanMeasurementResponse])
 def get_ocean_measurements(
     variable: str = Query("temperature", description="Variable to query: temperature, salinity, oxygen"),
     region_id: str = Query("Arabian_Sea", description="Target region identifier"),
     limit: int = Query(100, le=1000),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    ocean_service: OceanService = Depends(get_ocean_service)
 ):
-    query = db.query(OceanMeasurementModel).filter(
-        OceanMeasurementModel.variable == variable
-    ).limit(limit).all()
-    
-    return [
-        {
-            "id": item.id,
-            "timestamp": item.timestamp.isoformat(),
-            "depth_m": float(item.depth_m),
-            "variable": item.variable,
-            "value": float(item.value),
-            "unit": item.unit,
-            "quality_flag": item.quality_flag
-        }
-        for item in query
-    ]
+    measurements = ocean_service.get_measurements(db, variable, region_id, limit)
+    return measurements
 
 @router.get("/trend")
 def get_ocean_trend(
     variable: str = Query("temperature"),
     region_id: str = Query("Arabian_Sea"),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    ocean_service: OceanService = Depends(get_ocean_service)
 ):
-    measurements = db.query(OceanMeasurementModel).filter(
-        OceanMeasurementModel.variable == variable
-    ).order_by(OceanMeasurementModel.timestamp.asc()).all()
+    measurements = ocean_service.get_all_for_variable(db, variable)
 
     timestamps = [m.timestamp for m in measurements]
     values = [float(m.value) for m in measurements]
@@ -55,11 +45,10 @@ def get_ocean_trend(
 @router.get("/anomalies")
 def get_ocean_anomalies(
     variable: str = Query("temperature"),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    ocean_service: OceanService = Depends(get_ocean_service)
 ):
-    measurements = db.query(OceanMeasurementModel).filter(
-        OceanMeasurementModel.variable == variable
-    ).order_by(OceanMeasurementModel.timestamp.asc()).all()
+    measurements = ocean_service.get_all_for_variable(db, variable)
 
     timestamps = [m.timestamp for m in measurements]
     values = [float(m.value) for m in measurements]
