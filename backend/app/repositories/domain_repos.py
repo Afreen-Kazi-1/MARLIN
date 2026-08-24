@@ -23,9 +23,16 @@ class DatasetRepository(BaseRepository[DatasetModel]):
 class SpeciesRepository(BaseRepository[SpeciesModel]):
     def __init__(self):
         super().__init__(SpeciesModel)
+        self._cache = {}
         
     def get_by_aphia_id(self, db: Session, aphia_id: int) -> Optional[SpeciesModel]:
-        return db.query(self.model).filter(self.model.aphia_id == aphia_id).first()
+        if aphia_id in self._cache:
+            return self._cache[aphia_id]
+        
+        result = db.query(self.model).filter(self.model.aphia_id == aphia_id).first()
+        if result:
+            self._cache[aphia_id] = result
+        return result
 
 class LocationRepository(BaseRepository[LocationModel]):
     def __init__(self):
