@@ -9,6 +9,13 @@ from fastapi.testclient import TestClient
 from app.main import app
 
 def run_evaluation():
+    # Configure standard streams to support UTF-8 on Windows environments
+    import sys
+    if hasattr(sys.stdout, 'reconfigure'):
+        sys.stdout.reconfigure(encoding='utf-8')
+    if hasattr(sys.stderr, 'reconfigure'):
+        sys.stderr.reconfigure(encoding='utf-8')
+
     client = TestClient(app)
     
     questions_path = os.path.join(os.path.dirname(__file__), '../evaluation/questions.json')
@@ -16,7 +23,7 @@ def run_evaluation():
         print("questions.json not found.")
         return
 
-    with open(questions_path, 'r') as f:
+    with open(questions_path, 'r', encoding='utf-8') as f:
         questions = json.load(f)
 
     total_claims = 0
@@ -30,11 +37,7 @@ def run_evaluation():
 
         try:
             import time
-            time.sleep(15)
-            
-            if idx >= 5:
-                print("  -> Reached 5 question limit. Skipping remaining.")
-                break
+            time.sleep(3)
 
             res = client.post("/api/query", json={"question": q['question']})
             if res.status_code != 200:

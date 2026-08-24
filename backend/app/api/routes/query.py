@@ -23,7 +23,16 @@ def execute_query(
     reasoning_service: ReasoningService = Depends(get_reasoning_service)
 ):
     # 1. Parse natural language into structured query
+    print("\n" + "="*80)
+    print(f"[INPUT] RECEIVED USER QUESTION: '{request.question}'")
+    print("="*80)
+    
     structured_query = query_interpreter.parse_query(request.question)
+    
+    print("\n[STEP 1] CONVERTED NL TO STRUCTURED QUERY (JSON SCHEMA)")
+    print("-" * 50)
+    import json
+    print(json.dumps(structured_query.model_dump(), indent=2))
     
     # 2. Persist query
     db_query = reasoning_service.create_query(
@@ -32,8 +41,11 @@ def execute_query(
         structured_query=structured_query.model_dump()
     )
     
-    # 3. Route datasets (mock/heuristic for now)
+    # 3. Route datasets
     datasets = query_interpreter.route_datasets(structured_query)
+    print("\n[STEP 2] ROUTED DATASETS / PLATFORMS FOR RETRIEVAL")
+    print("-" * 50)
+    print(f"Mapped variables/entities to datasets: {datasets}")
     
     from app.services.domain_services import OceanService
     from app.analytics.engine import ScientificAnalyticsEngine
@@ -54,7 +66,7 @@ def execute_query(
         elif "ph" in v_lower:
             var = "ph"
             break
-
+ 
     if var:
         ocean_service = OceanService()
         measurements = ocean_service.get_measurements(db, variable=var, region_id=structured_query.entities.region, limit=1000)
@@ -73,7 +85,7 @@ def execute_query(
             )
         else:
             dynamic_evidence_text = f"Insufficient data points (found {len(measurements) if measurements else 0}) for {var} in {structured_query.entities.region}."
-
+ 
     evidence = reasoning_service.create_evidence(
         db=db,
         query_id=db_query.id,
@@ -93,6 +105,11 @@ def execute_query(
         evidence_ids=[evidence.id]
     )
     
+    print("\n[STEP 3] REASONING & GROUNDING (CLAIMS + EVIDENCE)")
+    print("-" * 50)
+    print(f"Claim [Status: {claim.status}]: {claim.claim_text}")
+    print(f"Evidence [Method: {evidence.method}]: {evidence.evidence_text}")
+    
     # 5. LLM Synthesis
     llm = LLMProvider()
     synthesis_prompt = (
@@ -101,7 +118,14 @@ def execute_query(
         f"Our claim is: {claim.claim_text}\n"
         f"Synthesize a helpful natural language response."
     )
+    print("\n[STEP 4] LLM SYNTHESIS PROMPT")
+    print("-" * 50)
+    print(synthesis_prompt)
+    print("-" * 50)
+    
     answer = llm.generate(synthesis_prompt)
+    print(f"\n[FINAL RESPONSE]\n{answer}")
+    print("="*80 + "\n")
     
     return QueryResponse(
         query_id=str(db_query.id),

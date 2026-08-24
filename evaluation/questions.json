@@ -1,192 +1,7 @@
 [
   {
-    "id": "O-1",
-    "question": "How has the sea surface temperature changed in the Arabian Sea over the last 1 years?",
-    "expected_domains": [
-      "oceanography"
-    ]
-  },
-  {
-    "id": "O-2",
-    "question": "How has the sea surface temperature changed in the Arabian Sea over the last 2 years?",
-    "expected_domains": [
-      "oceanography"
-    ]
-  },
-  {
-    "id": "O-3",
-    "question": "How has the sea surface temperature changed in the Arabian Sea over the last 3 years?",
-    "expected_domains": [
-      "oceanography"
-    ]
-  },
-  {
-    "id": "O-4",
-    "question": "How has the sea surface temperature changed in the Arabian Sea over the last 4 years?",
-    "expected_domains": [
-      "oceanography"
-    ]
-  },
-  {
-    "id": "O-5",
-    "question": "How has the sea surface temperature changed in the Arabian Sea over the last 5 years?",
-    "expected_domains": [
-      "oceanography"
-    ]
-  },
-  {
-    "id": "O-6",
-    "question": "How has the sea surface temperature changed in the Arabian Sea over the last 6 years?",
-    "expected_domains": [
-      "oceanography"
-    ]
-  },
-  {
-    "id": "O-7",
-    "question": "How has the sea surface temperature changed in the Arabian Sea over the last 7 years?",
-    "expected_domains": [
-      "oceanography"
-    ]
-  },
-  {
-    "id": "O-8",
-    "question": "How has the sea surface temperature changed in the Arabian Sea over the last 8 years?",
-    "expected_domains": [
-      "oceanography"
-    ]
-  },
-  {
-    "id": "O-9",
-    "question": "How has the sea surface temperature changed in the Arabian Sea over the last 9 years?",
-    "expected_domains": [
-      "oceanography"
-    ]
-  },
-  {
-    "id": "O-10",
-    "question": "How has the sea surface temperature changed in the Arabian Sea over the last 10 years?",
-    "expected_domains": [
-      "oceanography"
-    ]
-  },
-  {
-    "id": "FB-1",
-    "question": "What is the occurrence trend of Yellowfin tuna in region 1?",
-    "expected_domains": [
-      "fisheries",
-      "biodiversity"
-    ]
-  },
-  {
-    "id": "FB-2",
-    "question": "What is the occurrence trend of Yellowfin tuna in region 2?",
-    "expected_domains": [
-      "fisheries",
-      "biodiversity"
-    ]
-  },
-  {
-    "id": "FB-3",
-    "question": "What is the occurrence trend of Yellowfin tuna in region 3?",
-    "expected_domains": [
-      "fisheries",
-      "biodiversity"
-    ]
-  },
-  {
-    "id": "FB-4",
-    "question": "What is the occurrence trend of Yellowfin tuna in region 4?",
-    "expected_domains": [
-      "fisheries",
-      "biodiversity"
-    ]
-  },
-  {
-    "id": "FB-5",
-    "question": "What is the occurrence trend of Yellowfin tuna in region 5?",
-    "expected_domains": [
-      "fisheries",
-      "biodiversity"
-    ]
-  },
-  {
-    "id": "FB-6",
-    "question": "What is the occurrence trend of Yellowfin tuna in region 6?",
-    "expected_domains": [
-      "fisheries",
-      "biodiversity"
-    ]
-  },
-  {
-    "id": "FB-7",
-    "question": "What is the occurrence trend of Yellowfin tuna in region 7?",
-    "expected_domains": [
-      "fisheries",
-      "biodiversity"
-    ]
-  },
-  {
-    "id": "FB-8",
-    "question": "What is the occurrence trend of Yellowfin tuna in region 8?",
-    "expected_domains": [
-      "fisheries",
-      "biodiversity"
-    ]
-  },
-  {
-    "id": "FB-9",
-    "question": "What is the occurrence trend of Yellowfin tuna in region 9?",
-    "expected_domains": [
-      "fisheries",
-      "biodiversity"
-    ]
-  },
-  {
-    "id": "FB-10",
-    "question": "What is the occurrence trend of Yellowfin tuna in region 10?",
-    "expected_domains": [
-      "fisheries",
-      "biodiversity"
-    ]
-  },
-  {
-    "id": "M-1",
-    "question": "What are the dominant taxa in the metagenomic samples from location 1?",
-    "expected_domains": [
-      "molecular"
-    ]
-  },
-  {
-    "id": "M-2",
-    "question": "What are the dominant taxa in the metagenomic samples from location 2?",
-    "expected_domains": [
-      "molecular"
-    ]
-  },
-  {
-    "id": "M-3",
-    "question": "What are the dominant taxa in the metagenomic samples from location 3?",
-    "expected_domains": [
-      "molecular"
-    ]
-  },
-  {
-    "id": "M-4",
-    "question": "What are the dominant taxa in the metagenomic samples from location 4?",
-    "expected_domains": [
-      "molecular"
-    ]
-  },
-  {
-    "id": "M-5",
-    "question": "What are the dominant taxa in the metagenomic samples from location 5?",
-    "expected_domains": [
-      "molecular"
-    ]
-  },
-  {
-    "id": "CD-1",
-    "question": "Is the decline in skipjack tuna catch correlated with temperature anomalies in year 2021?",
+    "id": "EVAL-1",
+    "question": "How does the sea surface temperature distribution in the Indian Ocean correlate with the occurrence of Yellowfin tuna?",
     "expected_domains": [
       "oceanography",
       "fisheries",
@@ -194,38 +9,32 @@
     ]
   },
   {
-    "id": "CD-2",
-    "question": "Is the decline in skipjack tuna catch correlated with temperature anomalies in year 2022?",
+    "id": "EVAL-2",
+    "question": "Are there significant differences in the abundance of phytoplankton (e.g., diatoms) between the Arabian Sea and the Bay of Bengal?",
     "expected_domains": [
-      "oceanography",
-      "fisheries",
-      "biodiversity"
+      "biodiversity",
+      "molecular"
     ]
   },
   {
-    "id": "CD-3",
-    "question": "Is the decline in skipjack tuna catch correlated with temperature anomalies in year 2023?",
+    "id": "EVAL-3",
+    "question": "What is the historical trend of skipjack tuna catch rates in the Pacific Ocean over the past decade?",
     "expected_domains": [
-      "oceanography",
-      "fisheries",
-      "biodiversity"
+      "fisheries"
     ]
   },
   {
-    "id": "CD-4",
-    "question": "Is the decline in skipjack tuna catch correlated with temperature anomalies in year 2024?",
+    "id": "EVAL-4",
+    "question": "How have salinity levels changed in the Mediterranean Sea since 2010 based on Argo float data?",
     "expected_domains": [
-      "oceanography",
-      "fisheries",
-      "biodiversity"
+      "oceanography"
     ]
   },
   {
-    "id": "CD-5",
-    "question": "Is the decline in skipjack tuna catch correlated with temperature anomalies in year 2025?",
+    "id": "EVAL-5",
+    "question": "Can you identify any correlation between ocean temperature anomalies and coral bleaching events recorded in the Great Barrier Reef?",
     "expected_domains": [
       "oceanography",
-      "fisheries",
       "biodiversity"
     ]
   }
