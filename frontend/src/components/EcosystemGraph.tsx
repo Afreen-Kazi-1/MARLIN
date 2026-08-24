@@ -22,6 +22,9 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
     detail: any;
   } | null>(null);
 
+  const safeClaims = Array.isArray(claims) ? claims : [];
+  const safeEvidence = Array.isArray(evidence) ? evidence : [];
+
   const domainColors: Record<string, { bg: string; border: string; text: string; glow: string }> = {
     oceanography: { bg: 'bg-cyan-500/20', border: 'border-cyan-500/50', text: 'text-cyan-300', glow: 'shadow-cyan-500/20' },
     fisheries: { bg: 'bg-amber-500/20', border: 'border-amber-500/50', text: 'text-amber-300', glow: 'shadow-amber-500/20' },
@@ -90,7 +93,7 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
 
         {/* Claim Nodes Row */}
         <div className="absolute top-[36%] inset-x-0 flex justify-around px-8 z-20">
-          {claims.map((claim, idx) => {
+          {safeClaims.map((claim) => {
             const style = domainColors[claim.domain] || domainColors.oceanography;
             return (
               <div
@@ -113,7 +116,7 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
                       {claim.domain}
                     </span>
                     <span className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-slate-900 text-slate-300">
-                      Conf: {(claim.confidence * 100).toFixed(0)}%
+                      Conf: {((claim.confidence || 0.95) * 100).toFixed(0)}%
                     </span>
                   </div>
                   <p className="text-[11px] text-slate-200 line-clamp-2 leading-tight">
@@ -127,8 +130,9 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
 
         {/* Evidence Nodes Row */}
         <div className="absolute top-[74%] inset-x-0 flex justify-around px-8 z-20">
-          {evidence.map((ev, idx) => {
+          {safeEvidence.map((ev) => {
             const style = domainColors[ev.domain] || domainColors.oceanography;
+            const srcId = ev.source_id ? ev.source_id.split(':')[0] : 'DB_RECORD';
             return (
               <div
                 key={ev.id}
@@ -136,7 +140,7 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
                   setSelectedNode({
                     id: ev.id,
                     type: 'evidence',
-                    title: `Grounding Evidence (${ev.source_id})`,
+                    title: `Grounding Evidence (${ev.source_id || ev.id})`,
                     detail: ev
                   })
                 }
@@ -148,7 +152,7 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
                   <div className="flex items-center justify-between mb-1">
                     <span className="text-[10px] font-mono text-slate-400 flex items-center gap-1">
                       <Database className="h-3 w-3 text-cyan-400" />
-                      {ev.source_id.split(':')[0]}
+                      {srcId}
                     </span>
                     <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" />
                   </div>
@@ -200,7 +204,7 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
                 <div className="flex justify-between">
                   <span className="text-slate-500">Confidence Score:</span>
                   <span className="font-mono font-bold text-amber-400">
-                    {(selectedNode.detail.confidence * 100).toFixed(1)}%
+                    {((selectedNode.detail.confidence || 0.95) * 100).toFixed(1)}%
                   </span>
                 </div>
               </div>
@@ -216,7 +220,7 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
                 </div>
                 <div className="flex justify-between">
                   <span className="text-slate-500">Source ID:</span>
-                  <span className="font-mono text-cyan-400">{selectedNode.detail.source_id}</span>
+                  <span className="font-mono text-cyan-400">{selectedNode.detail.source_id || 'DB_RECORD'}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-slate-500">Analytical Method:</span>

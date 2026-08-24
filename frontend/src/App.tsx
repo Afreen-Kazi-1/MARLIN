@@ -15,7 +15,7 @@ import {
   MolecularSample,
   QueryResponse
 } from './types';
-import { DEMO_SYSTEM_STATS, MOCK_QUERY_RESPONSE } from './services/demoData';
+import { DEMO_SYSTEM_STATS } from './services/demoData';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<string>('dashboard');
@@ -25,7 +25,7 @@ export default function App() {
   const [biodiversityData, setBiodiversityData] = useState<BiodiversityObservation[]>([]);
   const [fisheriesData, setFisheriesData] = useState<FisheriesRecord[]>([]);
   const [molecularData, setMolecularData] = useState<MolecularSample[]>([]);
-  const [currentQueryResponse, setCurrentQueryResponse] = useState<QueryResponse | null>(MOCK_QUERY_RESPONSE);
+  const [currentQueryResponse, setCurrentQueryResponse] = useState<QueryResponse | null>(null);
 
   useEffect(() => {
     const loadInitialData = async () => {
@@ -52,19 +52,20 @@ export default function App() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#030712] text-slate-100 flex flex-col font-sans selection:bg-cyan-500/30">
-      {/* Top Header */}
-      <Header
-        stats={stats}
-        searchTerm={searchTerm}
-        onSearchChange={setSearchTerm}
-        activeTab={activeTab}
-      />
+    <div className="min-h-screen bg-[#080d1a] text-slate-100 flex font-sans selection:bg-cyan-500/30">
+      {/* Fixed Full Height Sidebar (Top-to-Bottom) */}
+      <Sidebar activeTab={activeTab} onSelectTab={setActiveTab} />
 
-      {/* Main Workspace Layout */}
-      <div className="flex-1 flex overflow-hidden">
-        {/* Sidebar Navigation */}
-        <Sidebar activeTab={activeTab} onSelectTab={setActiveTab} />
+      {/* Right Content Area (Padded by ml-64 for fixed Sidebar) */}
+      <div className="flex-1 flex flex-col min-h-screen ml-64 min-w-0">
+        {/* Top Header */}
+        <Header
+          stats={stats}
+          searchTerm={searchTerm}
+          onSearchChange={setSearchTerm}
+          activeTab={activeTab}
+          onSelectTab={setActiveTab}
+        />
 
         {/* View Content Area */}
         <main className="flex-1 p-6 overflow-y-auto max-w-7xl mx-auto w-full">
@@ -107,12 +108,12 @@ export default function App() {
 
           {activeTab === 'taxonomy' && <TaxonomyResolver />}
         </main>
-      </div>
 
-      {/* Footer */}
-      <footer className="border-t border-slate-900 px-6 py-3 text-center text-xs text-slate-400 bg-slate-950/80 backdrop-blur-md">
-        Unified Marine Intelligence & Ecosystem Reasoning Platform • SIH PS 20 • Branch: <span className="font-mono text-cyan-400">Frontend-Mudit</span>
-      </footer>
+        {/* Footer */}
+        <footer className="border-t border-[#1e2d4a] px-6 py-3 text-center text-xs text-slate-400 bg-[#0b1222]">
+          Unified Marine Intelligence & Ecosystem Reasoning Platform • SIH PS 20
+        </footer>
+      </div>
     </div>
   );
 }

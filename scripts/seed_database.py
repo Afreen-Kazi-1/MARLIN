@@ -4,7 +4,8 @@ import json
 from datetime import datetime
 from sqlalchemy import text
 
-# Ensure backend path is in sys.path
+sys.path.append("/app")
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "backend")))
 
 from app.database.session import engine, SessionLocal
