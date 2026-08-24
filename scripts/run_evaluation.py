@@ -39,6 +39,10 @@ def run_evaluation():
             import time
             time.sleep(3)
 
+            if idx >= 10:
+                print("  -> Reached 10 question limit. Skipping remaining.")
+                break
+
             res = client.post("/api/query", json={"question": q['question']})
             if res.status_code != 200:
                 print(f"  -> ERROR: {res.status_code} - {res.text}")

@@ -5,7 +5,7 @@ from app.config import settings
 # Fix for Supabase transaction pooler: use psycopg3 driver and small pool size
 db_url = settings.DATABASE_URL
 if db_url.startswith("postgresql://"):
-    db_url = db_url.replace("postgresql://", "postgresql+psycopg://", 1)
+    db_url = db_url.replace("postgresql://", "postgresql+psycopg2://", 1)
 
 engine = create_engine(
     db_url,

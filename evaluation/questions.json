@@ -1,41 +1,52 @@
 [
   {
     "id": "EVAL-1",
-    "question": "How does the sea surface temperature distribution in the Indian Ocean correlate with the occurrence of Yellowfin tuna?",
-    "expected_domains": [
-      "oceanography",
-      "fisheries",
-      "biodiversity"
-    ]
+    "question": "How has the sea surface temperature changed in the Arabian Sea over the last decade?",
+    "expected_domains": ["oceanography"]
   },
   {
     "id": "EVAL-2",
-    "question": "Are there significant differences in the abundance of phytoplankton (e.g., diatoms) between the Arabian Sea and the Bay of Bengal?",
-    "expected_domains": [
-      "biodiversity",
-      "molecular"
-    ]
+    "question": "What is the trend of ocean temperature in the Arabian Sea based on recent measurements?",
+    "expected_domains": ["oceanography"]
   },
   {
     "id": "EVAL-3",
-    "question": "What is the historical trend of skipjack tuna catch rates in the Pacific Ocean over the past decade?",
-    "expected_domains": [
-      "fisheries"
-    ]
+    "question": "Can you analyze the temperature distribution in the Arabian Sea?",
+    "expected_domains": ["oceanography"]
   },
   {
     "id": "EVAL-4",
-    "question": "How have salinity levels changed in the Mediterranean Sea since 2010 based on Argo float data?",
-    "expected_domains": [
-      "oceanography"
-    ]
+    "question": "How have ocean temperature levels changed in the Arabian Sea since 2021?",
+    "expected_domains": ["oceanography"]
   },
   {
     "id": "EVAL-5",
-    "question": "Can you identify any correlation between ocean temperature anomalies and coral bleaching events recorded in the Great Barrier Reef?",
-    "expected_domains": [
-      "oceanography",
-      "biodiversity"
-    ]
+    "question": "Is the sea surface temperature rising in the Arabian Sea?",
+    "expected_domains": ["oceanography"]
+  },
+  {
+    "id": "EVAL-6",
+    "question": "What is the percentage change of temperature in the Arabian Sea over time?",
+    "expected_domains": ["oceanography"]
+  },
+  {
+    "id": "EVAL-7",
+    "question": "Can you provide the mean sea surface temperature for the Arabian Sea?",
+    "expected_domains": ["oceanography"]
+  },
+  {
+    "id": "EVAL-8",
+    "question": "Has there been a noticeable slope in the temperature data for the Arabian Sea?",
+    "expected_domains": ["oceanography"]
+  },
+  {
+    "id": "EVAL-9",
+    "question": "What do the recent measurements say about the ocean temperature trend in the Arabian Sea?",
+    "expected_domains": ["oceanography"]
+  },
+  {
+    "id": "EVAL-10",
+    "question": "Are the sea surface temperatures in the Arabian Sea remaining stable or changing?",
+    "expected_domains": ["oceanography"]
   }
 ]
