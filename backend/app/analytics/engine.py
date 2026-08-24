@@ -1,7 +1,8 @@
 import pandas as pd
 import numpy as np
 from scipy import stats
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Tuple
+from functools import lru_cache
 
 class ScientificAnalyticsEngine:
     """
@@ -11,6 +12,11 @@ class ScientificAnalyticsEngine:
 
     @staticmethod
     def calculate_trend(timestamps: List[Any], values: List[float]) -> Dict[str, Any]:
+        return ScientificAnalyticsEngine._calculate_trend_cached(tuple(timestamps), tuple(values))
+
+    @staticmethod
+    @lru_cache(maxsize=128)
+    def _calculate_trend_cached(timestamps: Tuple[Any, ...], values: Tuple[float, ...]) -> Dict[str, Any]:
         """
         Calculates linear regression trends, summary statistics, and percentage change.
         """
@@ -56,6 +62,11 @@ class ScientificAnalyticsEngine:
 
     @staticmethod
     def calculate_correlation(values_x: List[float], values_y: List[float]) -> Dict[str, Any]:
+        return ScientificAnalyticsEngine._calculate_correlation_cached(tuple(values_x), tuple(values_y))
+
+    @staticmethod
+    @lru_cache(maxsize=128)
+    def _calculate_correlation_cached(values_x: Tuple[float, ...], values_y: Tuple[float, ...]) -> Dict[str, Any]:
         """
         Calculates Pearson linear and Spearman rank-order correlations.
         """
@@ -80,6 +91,11 @@ class ScientificAnalyticsEngine:
 
     @staticmethod
     def detect_anomalies(values: List[float], timestamps: List[Any], window: int = 6, threshold: float = 2.0) -> List[Dict[str, Any]]:
+        return ScientificAnalyticsEngine._detect_anomalies_cached(tuple(values), tuple(timestamps), window, threshold)
+
+    @staticmethod
+    @lru_cache(maxsize=128)
+    def _detect_anomalies_cached(values: Tuple[float, ...], timestamps: Tuple[Any, ...], window: int = 6, threshold: float = 2.0) -> List[Dict[str, Any]]:
         """
         Calculates rolling baselines and identifies statistical anomalies using z-score thresholding.
         """

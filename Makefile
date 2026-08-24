@@ -33,7 +33,7 @@ dev-frontend:
 	cd frontend && npm run dev
 
 test:
-	cd backend && pytest tests/
+	cd backend && pytest app/tests/
 
 docker-up:
 	docker compose up -d --build

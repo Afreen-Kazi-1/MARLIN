@@ -17,15 +17,23 @@ class StructuredQuery(BaseModel):
     requested_analysis: List[str] = Field(default_factory=lambda: ["trend", "correlation"])
 
 class QueryRequest(BaseModel):
-    question: str = Field(..., example="Why has yellowfin tuna changed in the Arabian Sea since 2021?")
+    question: Optional[str] = Field(default=None, example="Why has yellowfin tuna changed in the Arabian Sea since 2021?")
+    query: Optional[str] = Field(default=None, example="Why has yellowfin tuna changed in the Arabian Sea since 2021?")
 
 class QueryResponse(BaseModel):
     query_id: str
-    question: str
+    question: Optional[str] = None
+    user_query: Optional[str] = None
     structured_query: StructuredQuery
-    answer: str
-    confidence: str
-    confidence_score: float
+    answer: Optional[str] = None
+    synthesis_summary: Optional[str] = None
+    confidence: Optional[str] = "High"
+    confidence_score: Optional[float] = 0.85
+    overall_confidence: Optional[float] = 0.85
+    unsupported_claim_rate: Optional[float] = 0.0
+    grounding_score: Optional[float] = 1.0
+    agent_trace: List[Dict[str, Any]] = Field(default_factory=list)
     claims: List[Dict[str, Any]] = Field(default_factory=list)
     evidence: List[Dict[str, Any]] = Field(default_factory=list)
+    bridges: List[Dict[str, Any]] = Field(default_factory=list)
     visualizations: List[Dict[str, Any]] = Field(default_factory=list)

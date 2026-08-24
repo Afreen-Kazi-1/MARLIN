@@ -51,14 +51,18 @@ class QueryInterpreterService:
         sources = set()
         for var in structured_query.variables:
             var_lower = var.lower()
-            if "temp" in var_lower or "salin" in var_lower or "ocean" in var_lower:
+            if "temp" in var_lower or "salin" in var_lower or "ocean" in var_lower or "environment" in var_lower:
                 sources.add("argo")
-            if "occur" in var_lower or "abund" in var_lower or "bio" in var_lower or "species" in var_lower:
+            if "occur" in var_lower or "abund" in var_lower or "bio" in var_lower or "species" in var_lower or "populat" in var_lower:
                 sources.add("obis")
-            if "catch" in var_lower or "land" in var_lower or "fish" in var_lower:
+            if "catch" in var_lower or "land" in var_lower or "fish" in var_lower or "biomass" in var_lower:
                 sources.add("fishstat")
             if "mol" in var_lower or "dna" in var_lower or "otu" in var_lower or "sample" in var_lower:
                 sources.add("mgnify")
+        
+        if structured_query.entities.species:
+            sources.add("obis")
+            sources.add("fishstat")
         
         sources.add("worms") # Always include taxonomy reference
         return sorted(list(sources))
