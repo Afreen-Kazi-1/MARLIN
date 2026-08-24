@@ -61,3 +61,4 @@ class MolecularSampleModel(Base):
     unit = Column(String(20), default="reads_ratio")
     source_record_id = Column(String(100), nullable=True)
     metadata_json = Column("metadata", JSONB, default={})
+    
