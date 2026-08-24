@@ -29,12 +29,20 @@ def run_evaluation():
         print(f"[{idx+1}/{len(questions)}] Q: {q['question']}")
 
         try:
+            import time
+            time.sleep(15)
+            
+            if idx >= 5:
+                print("  -> Reached 5 question limit. Skipping remaining.")
+                break
+
             res = client.post("/api/query", json={"question": q['question']})
             if res.status_code != 200:
                 print(f"  -> ERROR: {res.status_code} - {res.text}")
                 continue
                 
             data = res.json()
+            answer_text = data.get("answer", "No answer provided")
             claims = data.get("claims", [])
             
             q_total_claims = len(claims)
@@ -43,6 +51,7 @@ def run_evaluation():
             total_claims += q_total_claims
             unsupported_claims += q_unsupported
             
+            print(f"  -> Answer: {answer_text}")
             print(f"  -> Generated {q_total_claims} claims. Unsupported: {q_unsupported}")
             
         except Exception as e:

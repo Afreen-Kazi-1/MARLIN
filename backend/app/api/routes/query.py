@@ -35,13 +35,50 @@ def execute_query(
     # 3. Route datasets (mock/heuristic for now)
     datasets = query_interpreter.route_datasets(structured_query)
     
-    # 4. Generate evidence and claims (Mocked logic for MVP to satisfy architecture)
-    # In a full system, this would call DomainServices and AnalyticsEngine based on the structured query
+    from app.services.domain_services import OceanService
+    from app.analytics.engine import ScientificAnalyticsEngine
+    
+    # 4. Generate evidence and claims by querying the database dynamically
+    dynamic_evidence_text = "No relevant numerical data could be found for the requested variables."
+    
+    # Check if we need to analyze ocean variables (e.g. temperature, salinity)
+    var = None
+    for v in structured_query.variables:
+        v_lower = v.lower()
+        if "temp" in v_lower:
+            var = "temperature"
+            break
+        elif "salin" in v_lower:
+            var = "salinity"
+            break
+        elif "ph" in v_lower:
+            var = "ph"
+            break
+
+    if var:
+        ocean_service = OceanService()
+        measurements = ocean_service.get_measurements(db, variable=var, region_id=structured_query.entities.region, limit=1000)
+        
+        if measurements and len(measurements) > 2:
+            timestamps = [m.timestamp for m in measurements]
+            values = [m.value for m in measurements]
+            trend_data = ScientificAnalyticsEngine.calculate_trend(timestamps, values)
+            
+            direction = "increased" if trend_data['slope'] > 0 else "decreased" if trend_data['slope'] < 0 else "remained stable"
+            dynamic_evidence_text = (
+                f"Analysis of {var} in {structured_query.entities.region} using {len(measurements)} records: "
+                f"The mean value is {trend_data['mean']:.2f}. "
+                f"The data shows a slope of {trend_data['slope']:.4f}, meaning it has {direction} with a "
+                f"total change of {trend_data['percentage_change']:.2f}% over the observed time period."
+            )
+        else:
+            dynamic_evidence_text = f"Insufficient data points (found {len(measurements) if measurements else 0}) for {var} in {structured_query.entities.region}."
+
     evidence = reasoning_service.create_evidence(
         db=db,
         query_id=db_query.id,
         source_type="derived_analysis",
-        evidence_text="Calculated trend and correlation from routed datasets.",
+        evidence_text=dynamic_evidence_text,
         method="deterministic_analytics",
         confidence=0.9
     )
